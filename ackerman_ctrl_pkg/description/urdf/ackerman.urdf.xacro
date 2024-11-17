@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- Basic differential drive mobile base -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="gripper_robot">
+    <xacro:arg name="prefix" default="" />
+
+    <!-- Include the diffbot_description.urdf.xacro -->
+    <xacro:include
+        filename="$(find bots_description)/ackerman/urdf/ackerman.urdf.xacro" />
+    <!-- Import Rviz colors -->
+    <xacro:include
+        filename="$(find bots_description)/common/urdf/materials.xacro" />
+
+    <xacro:include
+        filename="$(find ackerman_ctrl_pkg)/hardware_interface/ackerman.gzb_control.xacro" />
+
+
+    <xacro:ackerman_gzb_control prefix="$(arg prefix)" />
+
+</robot>

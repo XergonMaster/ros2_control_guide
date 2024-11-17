@@ -1,0 +1,25 @@
+# test_gripper_controller.yaml
+gripper_controller:
+  type: "gripper_ctrl_pkg/GripperCtrl"
+  linear_joint_name: "linear_joint"
+  rotational_joint_name: "rotational_joint"
+
+  # Parámetros opcionales que puedes ajustar según tu modelo
+  limits:
+    linear_joint:
+      velocity: 1.0
+      effort: 10.0
+      lower: 0.0
+      upper: 0.2
+    rotational_joint:
+      velocity: 1.0
+      effort: 10.0
+      lower: -1.57
+      upper: 1.57
+
+  # Otras configuraciones
+  wheel_separation: 0.4  # Ajustado para el tamaño de los actuadores
+  wheel_radius: 0.1      # Radio del actuador rotacional (puedes ajustarlo)
+
+  state_publisher_rate: 50  # Frecuencia de publicación de estados (50 Hz)
+  command_interface: "velocity"  # Interfaz de comandos a controlar (puede ser "position" o "velocity")

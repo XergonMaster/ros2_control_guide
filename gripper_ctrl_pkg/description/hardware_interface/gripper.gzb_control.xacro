@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="gripper_gzb_control" params="prefix">
+
+        <!-- ros2_control block for exposing the hardware interface -->
+        <ros2_control name="GazeboSystem" type="system">
+            <hardware>
+                <!-- Plugin to expose hardware interface to Gazebo -->
+                <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+            </hardware>
+
+            <!-- Linear joint hardware interface -->
+            <joint name="linear_joint">
+                <!-- Command interface to control velocity -->
+                <command_interface name="velocity">
+                    <param name="min">-1</param>
+                    <param name="max">1</param>
+                </command_interface>
+                <!-- State interfaces to read position and velocity -->
+                <state_interface name="position" />
+                <state_interface name="velocity" />
+            </joint>
+
+            <!-- Rotational joint hardware interface -->
+            <joint name="rotational_joint">
+                <!-- Command interface to control velocity -->
+                <command_interface name="velocity">
+                    <param name="min">-1</param>
+                    <param name="max">1</param>
+                </command_interface>
+                <!-- State interfaces to read position and velocity -->
+                <state_interface name="position" />
+                <state_interface name="velocity" />
+            </joint>
+        </ros2_control>
+                <!-- <robotNamespace>${prefix}</robotNamespace> -->
+
+        <!-- Gazebo plugin for ros2_control without YAML configuration -->
+        <gazebo>
+            <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+                <parameters>$(find gripper_ctrl_pkg)/config/gzb_HI.yaml</parameters>
+            </plugin>
+        </gazebo>
+
+    </xacro:macro>
+
+</robot>

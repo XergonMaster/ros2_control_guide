@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>gripper_ctrl_pkg</name>
+  <version>0.0.1</version>
+  <description>Controlador para manejar los joints linear y rotacional en un actuador tipo gripper.</description>
+
+  <!-- Mantenedor del paquete -->
+  <maintainer email="david.salazar51@eia.edu.co">xergon</maintainer>
+
+  <!-- Licencia -->
+  <license>Apache-2.0</license>
+
+  <!-- Dependencias del sistema de construcción -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- Dependencias de compilación -->
+  <build_depend>controller_interface</build_depend>
+  <build_depend>rclcpp</build_depend>
+  <build_depend>rclcpp_lifecycle</build_depend>
+
+  <!-- Dependencias de exportación -->
+  <build_export_depend>controller_interface</build_export_depend>
+  <build_export_depend>rclcpp</build_export_depend>
+  <build_export_depend>rclcpp_lifecycle</build_export_depend>
+
+  <!-- Dependencias de ejecución -->
+  <exec_depend>controller_interface</exec_depend>
+  <exec_depend>rclcpp</exec_depend>
+  <exec_depend>rclcpp_lifecycle</exec_depend>
+
+  <!-- Dependencias de pruebas -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_cmake_gmock</test_depend>
+  <test_depend>controller_manager</test_depend>
+  <test_depend>ros2_control_test_assets</test_depend>
+
+  <!-- Exportar el archivo de descripción del plugin -->
+  <export>
+    <build_type>ament_cmake</build_type>
+    <!-- <pluginlib plugin="${prefix}/resource/gripper_ctrl_pkg_plugins.xml"/> -->
+  </export>
+</package>

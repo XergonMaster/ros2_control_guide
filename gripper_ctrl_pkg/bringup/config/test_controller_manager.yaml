@@ -1,0 +1,8 @@
+# test_controller_manager.yaml
+controller_manager:
+  ros__parameters:
+    update_rate: 50  # Tasa de actualización de los controladores (en Hz)
+    gripper_controller:
+      type: "gripper_ctrl_pkg/GripperCtrl"
+      linear_joint_name: "linear_joint"
+      rotational_joint_name: "rotational_joint"

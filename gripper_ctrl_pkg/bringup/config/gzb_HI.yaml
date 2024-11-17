@@ -1,0 +1,31 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 50  # Frecuencia de actualización del controlador (Hz)
+    use_sim_time: false  # Si estás usando tiempo simulado
+
+    # Joint state broadcaster (obligatorio para publicar estados de los joints)
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    # Gripper controller
+    gripper_controller:
+      type: "gripper_ctrl_pkg/GripperCtrl"  # Tipo de controlador, debe coincidir con tu controlador
+      linear_joint_name: "linear_joint"  # Nombre del joint lineal
+      rotational_joint_name: "rotational_joint"  # Nombre del joint rotacional
+
+      # Límites del controlador
+      limits:
+        linear_joint:
+          velocity: 1.0  # Límite de velocidad para la junta lineal
+          effort: 10.0   # Límite de esfuerzo para la junta lineal
+          lower: 0.0     # Límite inferior de posición para la junta lineal
+          upper: 0.2     # Límite superior de posición para la junta lineal
+        rotational_joint:
+          velocity: 1.0  # Límite de velocidad para la junta rotacional
+          effort: 10.0   # Límite de esfuerzo para la junta rotacional
+          lower: -1.57   # Límite inferior de rotación (en radianes)
+          upper: 1.57    # Límite superior de rotación (en radianes)
+
+      # Frecuencia de publicación de estados
+      state_publisher_rate: 50  # Frecuencia a la que se publican los estados de los joints
+      command_interface: "velocity"  # Interfaz de comandos que controlará el controlador (puede ser "position" o "velocity")
