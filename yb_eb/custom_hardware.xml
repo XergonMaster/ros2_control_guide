@@ -1,0 +1,10 @@
+<library path="yb_eb">
+    <class 
+        name="yb_eb/YbEbHw"
+        type="yb_eb::YbEbHw"
+        base_class_type="hardware_interface::SystemInterface">
+        <description>
+            Yamboard Hardware Interface for ROS 2 Control.
+        </description>
+    </class>
+</library>
