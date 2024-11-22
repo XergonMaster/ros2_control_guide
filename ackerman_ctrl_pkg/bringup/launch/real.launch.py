@@ -6,7 +6,7 @@ from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
 from launch.actions import IncludeLaunchDescription, RegisterEventHandler
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.event_handlers import OnExecutionComplete
+from launch.event_handlers import OnProcessStart
 
 
 def generate_launch_description():
@@ -66,19 +66,19 @@ def generate_launch_description():
         output='screen'
     )
 
-    # Registro de eventos: ejecutar `joint_state_spawner` tras `control_node`
+    # Evento para iniciar `joint_state_spawner` tras el inicio de `control_node`
     joint_state_event = RegisterEventHandler(
-        event_handler=OnExecutionComplete(
+        OnProcessStart(
             target_action=control_node,
-            on_completion=[joint_state_spawner],
+            on_start=[joint_state_spawner]
         )
     )
 
-    # Registro de eventos: ejecutar controladores tras `joint_state_spawner`
-    hardware_and_steering_event = RegisterEventHandler(
-        event_handler=OnExecutionComplete(
+    # Evento para iniciar `ackermann_steering_controller_spawner` tras el inicio de `joint_state_spawner`
+    steering_controller_event = RegisterEventHandler(
+        OnProcessStart(
             target_action=joint_state_spawner,
-            on_completion=[ ackermann_steering_controller_spawner],
+            on_start=[ackermann_steering_controller_spawner]
         )
     )
 
@@ -87,5 +87,5 @@ def generate_launch_description():
         view_robot_launch,
         control_node,
         joint_state_event,
-        hardware_and_steering_event,
+        steering_controller_event,
     ])
