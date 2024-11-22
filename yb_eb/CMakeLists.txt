@@ -11,25 +11,30 @@ find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(hardware_interface REQUIRED)
-
+find_package(std_msgs REQUIRED)
 
 add_library(${PROJECT_NAME} SHARED
  src/yb_eb_HW.cpp
+ src/eb_serial.cpp
  )
 
-# target_compile_features(yb_eb_HW PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+ # Construye el ejecutable 'beep_node'
 
-# target_include_directories(${PROJECT_NAME}
-#  PUBLIC
-#   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#   $<INSTALL_INTERFACE:include>)
+add_executable(beep_node src/beep_node.cpp)
+target_link_libraries(beep_node ${PROJECT_NAME})  # Usa la biblioteca principal
+ament_target_dependencies(beep_node rclcpp std_msgs)
+
+# Construye el ejecutable 'servo_node'
+add_executable(servo_node src/servo_node.cpp)
+target_link_libraries(servo_node ${PROJECT_NAME})  # Usa la biblioteca principal
+ament_target_dependencies(servo_node rclcpp std_msgs)
 
 
-# target_include_directories(
-#   ${PROJECT_NAME}
-#   PRIVATE
-#   include
-# )
+# Instala los ejecutables
+install(TARGETS 
+  beep_node servo_node 
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

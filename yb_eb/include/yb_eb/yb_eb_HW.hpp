@@ -16,6 +16,22 @@ namespace yb_eb
 
   class YbEbHw : public hardware_interface::SystemInterface
   {
+    struct Config
+    {
+      bool debug = false;
+      std::string com_port = "/dev/myserial";
+      std::string motor_name = "motor_joint";
+      std::string steering_name = "steering_joint";
+      double max_forward_motor = 98.0;
+      double min_forward_motor = 91.0;
+      double max_reverse_motor = 89.0;
+      double min_reverse_motor = 76.0;
+      double max_ang_steering = 115.0;
+      double min_ang_steering = 65.0;
+      double center_ang_steering = 90.0;
+      double zero_ang_motor = 90.0;
+    };
+
   public:
     RCLCPP_SHARED_PTR_DEFINITIONS(YbEbHw)
 
@@ -48,9 +64,13 @@ namespace yb_eb
     // virtual ~YbEbHw();
 
   private:
+    int state_machine(int current_state, double cmd_motor);
+
     std::vector<double> hw_commnds_;
     std::vector<double> hw_states_position_;
     std::vector<double> hw_states_velocity_;
+    int state = 0;
+    Config cfg_;
   };
 
 } // namespace yb_eb
