@@ -41,6 +41,16 @@
       <param name="min_ang_motor">86</param>
       <param name="max_ang_steering">115</param>
       <param name="min_ang_steering">65</param> -->
+
+        <param name = "motor_name">motor_joint</param>
+        <param name = "steering_name">steering_joint</param>
+        <param name = "debug">false</param>
+        <param name = "max_forward_motor"> 98.0</param>
+        <param name = "min_forward_motor"> 91.0</param>
+        <param name = "max_reverse_motor"> 89.0</param>
+        <param name = "min_reverse_motor"> 76.0</param>
+        <param name = "max_ang_steering"> 115.0</param>
+        <param name = "min_ang_steering"> 65.0</param>
     </hardware>
        
         <joint name="steering_joint">

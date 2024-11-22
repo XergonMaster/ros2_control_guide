@@ -23,17 +23,9 @@ ackermann_steering_controller:
     rear_wheels_names: ["motor_joint"]
     front_wheels_names: ["steering_joint"]
     wheelbase: 1.0
-    front_wheel_track: 0.55
-    rear_wheel_track: 0.55
-    front_wheels_radius: 0.1
-    rear_wheels_radius: 0.1
+    front_wheel_track: 0.18
+    rear_wheel_track: 0.18
+    front_wheels_radius: 0.0345
+    rear_wheels_radius: 0.0345
 
-ackermann_hardware:  # Este nombre debe coincidir con el declarado en el bloque de controller_manager
-  ros__parameters:
-    motor_name: "motor_joint"
-    steering_name: "steering_joint"
-    debug: false
-    max_ang_motor: 100 
-    min_ang_motor: 86
-    max_ang_steering: 115
-    min_ang_steering: 65
+
