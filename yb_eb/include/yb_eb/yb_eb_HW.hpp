@@ -11,6 +11,8 @@
 #include "rclcpp_lifecycle/state.hpp"
 #include "yb_eb/visibility_control.h"
 
+#include "yb_eb/eb_serial.hpp"
+
 namespace yb_eb
 {
 
@@ -30,6 +32,7 @@ namespace yb_eb
       double min_ang_steering = 65.0;
       double center_ang_steering = 90.0;
       double zero_ang_motor = 90.0;
+      bool create_receive_threading = false;
     };
 
   public:
@@ -65,12 +68,14 @@ namespace yb_eb
 
   private:
     int state_machine(int current_state, double cmd_motor);
-
     std::vector<double> hw_commnds_;
+    std::vector<double> last_hw_commands_;
+
     std::vector<double> hw_states_position_;
     std::vector<double> hw_states_velocity_;
     int state = 0;
     Config cfg_;
+    std::shared_ptr<EBSerial> board_;
   };
 
 } // namespace yb_eb

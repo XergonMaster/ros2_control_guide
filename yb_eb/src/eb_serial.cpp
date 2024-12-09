@@ -1,5 +1,6 @@
 #include "yb_eb/eb_serial.hpp"
 
+#define MAX_DATA_LENGTH 20
 namespace yb_eb
 {
     EBSerial::EBSerial(uint8_t car_type, const std::string &com, bool debug)
@@ -157,8 +158,9 @@ namespace yb_eb
             {
                 if (!serial.is_open())
                 {
-                    break; // Sal del bucle si el puerto serial está cerrado
+                    break; // Salir del bucle si el puerto serial está cerrado
                 }
+
                 uint8_t head1 = read_byte_from_serial();
                 if (head1 == __HEAD)
                 {
@@ -170,32 +172,48 @@ namespace yb_eb
                     {
                         uint8_t ext_len = read_byte_from_serial();
                         uint8_t ext_type = read_byte_from_serial();
+
+                        // Convertir data_len a un tipo sin signo para evitar advertencias
+                        size_t data_len = static_cast<size_t>(ext_len - 2); // Restamos los 2 bytes de encabezado
+
+                        if (data_len == 0 || data_len > MAX_DATA_LENGTH) // MAX_DATA_LENGTH es un valor razonable
+                        {
+                            if (debug)
+                            {
+                                std::cerr << "Invalid data length: " << data_len << std::endl;
+                            }
+                            continue; // Si la longitud es incorrecta, esperar el siguiente paquete
+                        }
+
+                        // Buffer para almacenar los datos del paquete
                         std::vector<uint8_t> ext_data;
                         check_sum = ext_len + ext_type;
-                        int data_len = ext_len - 2;
 
-                        for (int i = 0; i < data_len; ++i)
+                        // Esperar hasta que todos los datos hayan sido recibidos
+                        while (ext_data.size() < data_len)
                         {
+                            // Leemos un byte y lo agregamos al vector de datos
                             uint8_t value = read_byte_from_serial();
                             ext_data.push_back(value);
+                            check_sum += value;
 
-                            if (i == data_len - 1)
+                            // Si es el último byte de datos, almacenamos para la verificación de la suma
+                            if (ext_data.size() == data_len)
                             {
                                 rx_check_num = value;
                             }
-                            else
-                            {
-                                check_sum += value;
-                                // }
-                            }
+                        }
 
-                            if (check_sum % 256 == rx_check_num)
+                        // Verificar la suma de verificación
+                        if (check_sum % 256 == rx_check_num)
+                        {
+                            __parse_data(ext_type, ext_data);
+                        }
+                        else
+                        {
+                            if (debug)
                             {
-                                __parse_data(ext_type, ext_data);
-                            }
-                            else if (debug)
-                            {
-                                std::cerr << "check sum error: " << static_cast<int>(ext_len) << " "
+                                std::cerr << "Checksum error: " << static_cast<int>(ext_len) << " "
                                           << static_cast<int>(ext_type) << " [";
                                 for (const auto &byte : ext_data)
                                 {
@@ -204,6 +222,14 @@ namespace yb_eb
                                 std::cerr << "]" << std::endl;
                             }
                         }
+                    }
+                    else
+                    {
+                        if (debug)
+                        {
+                            std::cerr << "Invalid device ID: " << static_cast<int>(head2) << std::endl;
+                        }
+                        continue; // Si el ID del dispositivo no es válido, continuar con el siguiente ciclo
                     }
                 }
             }
