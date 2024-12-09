@@ -12,6 +12,7 @@ find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
+# further dependencies manually
 # find_package(<dependency> REQUIRED)
 
 find_library(vicon_lib NAMES ViconDataStreamSDK_CPP PATHS ${CMAKE_SOURCE_DIR}/libs/Vicon_DataStreamSDK_Linux64 REQUIRED NO_DEFAULT_PATH)
