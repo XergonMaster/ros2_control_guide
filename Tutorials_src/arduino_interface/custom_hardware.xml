@@ -1,0 +1,10 @@
+<library path="arduino_test_HW">
+    <class 
+        name="Juanjo"
+        type="arduino_interface::ArduinoTestHw"
+        base_class_type="hardware_interface::SystemInterface">
+        <description>
+            Whatever the user may to know
+        </description>
+    </class>
+</library>
