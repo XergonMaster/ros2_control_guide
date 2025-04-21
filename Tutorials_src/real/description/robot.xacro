@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="my_robot">
+    <xacro:property name="robot_namespace" value="robot"/>
+    <xacro:property name="robot_description" value="$(arg robot_description)"/>
+
+    <!-- Define materials -->
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+    <material name="blue">
+        <color rgba="0 0 1 1"/>
+    </material>
+
+    <!-- Define links -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="0.5 0.5 0.1"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <link name="link1">
+        <visual>
+            <geometry>
+                <cylinder length="1.0" radius="0.1"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+
+    <!-- Define joints -->
+    <joint name="joint1" type="revolute">
+        <parent link="base_link"/>
+        <child link="link1"/>
+        <origin xyz="0 0 0.55" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="100" velocity="1.0" lower="-1.57" upper="1.57"/>
+    </joint>
+
+    <!-- ROS2 Control -->
+    <ros2_control name="motor_arduino" type="system">
+        <hardware>
+            <plugin>Juanjo</plugin>
+        </hardware>
+        <joint name="joint1">
+            <command_interface name="position"/>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+    </ros2_control>
+
+</robot>
